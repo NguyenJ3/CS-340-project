@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Authors</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			border: 1px solid black;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color: #f2f2f2;
+		}
+		form {
+			margin-bottom: 20px;
+		}
+		input[type="submit"] {
+			margin-top: 10px;
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Author Information</h1>
+
+	<!-- Add form -->
+	<form id="add-form">
+		<label for="authorID">Floor ID:</label>
+		<input type="text" id="authorID" name="authorID">
+		<label for="bookid">Book ID:</label>
+		<input type="text" id="bookid" name="bookid">
+		<label for="genreid">Genre ID:</label>
+		<input type="text" id="genreid" name="genreid">
+		<input type="submit" value="Add">
+	</form>
+
+	<!-- Table -->
+	<table>
+		<thead>
+			<tr>
+				<th>authorID</th>
+				<th>bookID</th>
+				<th>authorName</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+			<tr>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>2</td>
+				<td>2</td>
+				
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>3</td>
+				<td>3</td>
+				
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td>4</td>
+				<td>4</td>
+				
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+     // Add event listener to Add form
+document.querySelector('#add-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const authorID= document.querySelector('#authorID').value;
+  const bookid = document.querySelector('#bookid').value;
+  const genreid = document.querySelector('#genreid').value;
+  const authorName = document.querySelector('#authorName').value;
+  if (authorID&& bookid && genreid && authorName) {
+    const table = document.querySelector('#table-body');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${authorID}</td>
+      <td>${bookid}</td>
+      <td>${genreid}</td>
+      <td>${authorName}</td>
+      <td>
+        <button onclick="editRow(this)">Edit</button>
+        <button onclick="deleteRow(this)">Delete</button>
+      </td>
+    `;
+    table.appendChild(row);
+    document.querySelector('#add-form').reset();
+  } else {
+    alert('Please fill all fields');
+  }
+});
+
+// Function to add a new row to the table
+function addRow() {
+  // Get the input values
+  var authorID= document.getElementById("authorID").value;
+  var bookid = document.getElementById("bookid").value;
+  var genreid = document.getElementById("genreid").value;
+  var authorName = document.getElementById("authorName").value;
+
+  // Create a new row element and its cells
+  var newRow = document.createElement("tr");
+  var authorIDCell = document.createElement("td");
+  var bookIdCell = document.createElement("td");
+  var genreIdCell = document.createElement("td");
+  var authorNameCell = document.createElement("td");
+  var editButtonCell = document.createElement("td");
+  var deleteButtonCell = document.createElement("td");
+  var editButton = document.createElement("button");
+  var deleteButton = document.createElement("button");
+
+  // Set the cell values
+  authorIDCell.innerText = authorID;
+  bookIdCell.innerText = bookid;
+  genreIdCell.innerText = genreid;
+  authorNameCell.innerText = authorName;
+
+  // Set the attributes for the edit and delete buttons
+  editButton.innerText = "Edit";
+  editButton.setAttribute("onclick", "editRow(this)");
+  deleteButton.innerText = "Delete";
+  deleteButton.setAttribute("onclick", "deleteRow(this)");
+
+  // Add the buttons to their cells and the cells to the row
+  editButtonCell.appendChild(editButton);
+  deleteButtonCell.appendChild(deleteButton);
+  newRow.appendChild(authorIDCell);
+  newRow.appendChild(bookIdCell);
+  newRow.appendChild(genreIdCell);
+  newRow.appendChild(authorNameCell);
+  newRow.appendChild(editButtonCell);
+  newRow.appendChild(deleteButtonCell);
+
+  // Add the new row to the table
+  document.getElementById("table-body").appendChild(newRow);
+
+  // Clear the form inputs
+  document.getElementById("authorID").value = "";
+  document.getElementById("bookid").value = "";
+  document.getElementById("genreid").value = "";
+  document.getElementById("authorName").value = "";
+}
+
+// Function to delete a row from the table
+function deleteRow(button) {
+  // Traverse the DOM to get the table row element
+  var row = button.parentNode.parentNode;
+
+  // Remove the row from the table
+  row.parentNode.removeChild(row);
+}
+// Function to edit a row in the table
+function editRow(button) {
+  // Traverse the DOM to get the table row element
+  var row = button.parentNode.parentNode;
+
+  // Get the current values from the row
+  var authorID= row.cells[0].innerText; 
+  var bookid = row.cells[1].innerText;
+  var genreid = row.cells[2].innerText;
+  var authorName = row.cells[3].innerText;
+
+  // Set the input values to the current values
+  document.getElementById("authorID").value = authorID;
+  document.getElementById("bookid").value = bookid;
+  document.getElementById("genreid").value = genreid;
+  document.getElementById("authorName").value = authorName;
+
+  // Remove the row from the table
+  row.parentNode.removeChild(row);
+}
+
+// Function to update a row in the table
+function updateRow() {
+  // Get the input values
+  var authorID= document.getElementById("authorID").value;
+  var bookid = document.getElementById("bookid").value;
+  var genreid = document.getElementById("genreid").value;
+  var authorName = document.getElementById("authorName").value;
+
+  // Create a new row element and its cells
+  var newRow = document.createElement("tr");
+  var authorIDCell = document.createElement("td");
+  var bookIdCell = document.createElement("td");
+  var genreIdCell = document.createElement("td");
+  var authorNameCell = document.createElement("td");
+  var deleteButtonCell = document.createElement("td");
+  var deleteButton = document.createElement("button");
+  var editButtonCell = document.createElement("td");
+  var editButton = document.createElement("button");
+
+  // Set the cell values
+  authorIDCell.innerText = authorID;
+  bookIdCell.innerText = bookid;
+  genreIdCell.innerText = genreid;
+  authorNameCell.innerText = authorName;
+
+  // Set the attributes for the delete button
+  deleteButton.innerText = "Delete";
+  deleteButton.setAttribute("onclick", "deleteRow(this)");
+
+  // Set the attributes for the edit button
+  editButton.innerText = "Edit";
+  editButton.setAttribute("onclick", "editRow(this)");
+
+  // Add the cells to the row and the buttons to their cells
+  deleteButtonCell.appendChild(deleteButton);
+  editButtonCell.appendChild(editButton);
+  newRow.appendChild(authorIDCell);
+  newRow.appendChild(bookIdCell);
+  newRow.appendChild(genreIdCell);
+  newRow.appendChild(authorNameCell);
+  newRow.appendChild(deleteButtonCell);
+  newRow.appendChild(editButtonCell);
+
+  // Add the new row to the table
+  document.getElementById("table-body").appendChild(newRow);
+
+  // Clear the form inputs
+  document.getElementById("authorID").value = "";
+  document.getElementById("bookid").value = "";
+  document.getElementById("genreid").value = "";
+  document.getElementById("authorName").value = "";
+}
+      </script>
+</body>
+</html>
