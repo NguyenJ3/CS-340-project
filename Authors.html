@@ -1,265 +1,143 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Authors</title>
-	<style>
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		th, td {
-			border: 1px solid black;
-			padding: 8px;
-			text-align: left;
-		}
-		th {
-			background-color: #f2f2f2;
-		}
-		form {
-			margin-bottom: 20px;
-		}
-		input[type="submit"] {
-			margin-top: 10px;
-			background-color: #4CAF50;
-			color: white;
-			padding: 10px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-		input[type="submit"]:hover {
-			background-color: #3e8e41;
-		}
-	</style>
+    <title>Authors</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
 </head>
 <body>
-	<h1>Author Information</h1>
+    <h1>Author Information</h1>
 
-	<!-- Add form -->
-	<form id="add-form">
-		<label for="authorID">Floor ID:</label>
-		<input type="text" id="authorID" name="authorID">
-		<label for="bookid">Book ID:</label>
-		<input type="text" id="bookid" name="bookid">
-		<label for="genreid">Genre ID:</label>
-		<input type="text" id="genreid" name="genreid">
-		<input type="submit" value="Add">
-	</form>
+    <!-- Add form -->
+    <form id="add-form">
+        <label for="authorname">Author Name:</label>
+        <input type="text" id="authorname" name="authorname">
+        <input type="submit" value="Add">
+    </form>
 
-	<!-- Table -->
-	<table>
-		<thead>
-			<tr>
-				<th>authorID</th>
-				<th>bookID</th>
-				<th>authorName</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody id="table-body">
-			<tr>
-				<td>1</td>
-				<td>1</td>
-				<td>1</td>
-				
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>2</td>
-				<td>2</td>
-				
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>3</td>
-				<td>3</td>
-				
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<script>
-     // Add event listener to Add form
-document.querySelector('#add-form').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const authorID= document.querySelector('#authorID').value;
-  const bookid = document.querySelector('#bookid').value;
-  const genreid = document.querySelector('#genreid').value;
-  const authorName = document.querySelector('#authorName').value;
-  if (authorID&& bookid && genreid && authorName) {
-    const table = document.querySelector('#table-body');
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${authorID}</td>
-      <td>${bookid}</td>
-      <td>${genreid}</td>
-      <td>${authorName}</td>
-      <td>
-        <button onclick="editRow(this)">Edit</button>
-        <button onclick="deleteRow(this)">Delete</button>
-      </td>
-    `;
-    table.appendChild(row);
-    document.querySelector('#add-form').reset();
-  } else {
-    alert('Please fill all fields');
-  }
-});
-
-// Function to add a new row to the table
-function addRow() {
-  // Get the input values
-  var authorID= document.getElementById("authorID").value;
-  var bookid = document.getElementById("bookid").value;
-  var genreid = document.getElementById("genreid").value;
-  var authorName = document.getElementById("authorName").value;
-
-  // Create a new row element and its cells
-  var newRow = document.createElement("tr");
-  var authorIDCell = document.createElement("td");
-  var bookIdCell = document.createElement("td");
-  var genreIdCell = document.createElement("td");
-  var authorNameCell = document.createElement("td");
-  var editButtonCell = document.createElement("td");
-  var deleteButtonCell = document.createElement("td");
-  var editButton = document.createElement("button");
-  var deleteButton = document.createElement("button");
-
-  // Set the cell values
-  authorIDCell.innerText = authorID;
-  bookIdCell.innerText = bookid;
-  genreIdCell.innerText = genreid;
-  authorNameCell.innerText = authorName;
-
-  // Set the attributes for the edit and delete buttons
-  editButton.innerText = "Edit";
-  editButton.setAttribute("onclick", "editRow(this)");
-  deleteButton.innerText = "Delete";
-  deleteButton.setAttribute("onclick", "deleteRow(this)");
-
-  // Add the buttons to their cells and the cells to the row
-  editButtonCell.appendChild(editButton);
-  deleteButtonCell.appendChild(deleteButton);
-  newRow.appendChild(authorIDCell);
-  newRow.appendChild(bookIdCell);
-  newRow.appendChild(genreIdCell);
-  newRow.appendChild(authorNameCell);
-  newRow.appendChild(editButtonCell);
-  newRow.appendChild(deleteButtonCell);
-
-  // Add the new row to the table
-  document.getElementById("table-body").appendChild(newRow);
-
-  // Clear the form inputs
-  document.getElementById("authorID").value = "";
-  document.getElementById("bookid").value = "";
-  document.getElementById("genreid").value = "";
-  document.getElementById("authorName").value = "";
-}
-
-// Function to delete a row from the table
-function deleteRow(button) {
-  // Traverse the DOM to get the table row element
-  var row = button.parentNode.parentNode;
-
-  // Remove the row from the table
-  row.parentNode.removeChild(row);
-}
-// Function to edit a row in the table
-function editRow(button) {
-  // Traverse the DOM to get the table row element
-  var row = button.parentNode.parentNode;
-
-  // Get the current values from the row
-  var authorID= row.cells[0].innerText; 
-  var bookid = row.cells[1].innerText;
-  var genreid = row.cells[2].innerText;
-  var authorName = row.cells[3].innerText;
-
-  // Set the input values to the current values
-  document.getElementById("authorID").value = authorID;
-  document.getElementById("bookid").value = bookid;
-  document.getElementById("genreid").value = genreid;
-  document.getElementById("authorName").value = authorName;
-
-  // Remove the row from the table
-  row.parentNode.removeChild(row);
-}
-
-// Function to update a row in the table
-function updateRow() {
-  // Get the input values
-  var authorID= document.getElementById("authorID").value;
-  var bookid = document.getElementById("bookid").value;
-  var genreid = document.getElementById("genreid").value;
-  var authorName = document.getElementById("authorName").value;
-
-  // Create a new row element and its cells
-  var newRow = document.createElement("tr");
-  var authorIDCell = document.createElement("td");
-  var bookIdCell = document.createElement("td");
-  var genreIdCell = document.createElement("td");
-  var authorNameCell = document.createElement("td");
-  var deleteButtonCell = document.createElement("td");
-  var deleteButton = document.createElement("button");
-  var editButtonCell = document.createElement("td");
-  var editButton = document.createElement("button");
-
-  // Set the cell values
-  authorIDCell.innerText = authorID;
-  bookIdCell.innerText = bookid;
-  genreIdCell.innerText = genreid;
-  authorNameCell.innerText = authorName;
-
-  // Set the attributes for the delete button
-  deleteButton.innerText = "Delete";
-  deleteButton.setAttribute("onclick", "deleteRow(this)");
-
-  // Set the attributes for the edit button
-  editButton.innerText = "Edit";
-  editButton.setAttribute("onclick", "editRow(this)");
-
-  // Add the cells to the row and the buttons to their cells
-  deleteButtonCell.appendChild(deleteButton);
-  editButtonCell.appendChild(editButton);
-  newRow.appendChild(authorIDCell);
-  newRow.appendChild(bookIdCell);
-  newRow.appendChild(genreIdCell);
-  newRow.appendChild(authorNameCell);
-  newRow.appendChild(deleteButtonCell);
-  newRow.appendChild(editButtonCell);
-
-  // Add the new row to the table
-  document.getElementById("table-body").appendChild(newRow);
-
-  // Clear the form inputs
-  document.getElementById("authorID").value = "";
-  document.getElementById("bookid").value = "";
-  document.getElementById("genreid").value = "";
-  document.getElementById("authorName").value = "";
-}
-      </script>
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Author ID</th>
+                <th>Author Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Bob Johnson</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Emily Wilson</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+<script>
+  let nextAuthorId = 5; // the next available ID for a new author row
+
+  // Add event listener to the form submission
+  document.getElementById("add-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // prevent the form from actually submitting
+  
+      // Get the input value from the form
+      let authorname = document.getElementById("authorname").value;
+  
+      // Add a new row to the table
+      let tableBody = document.getElementById("table-body");
+      let newRow = tableBody.insertRow();
+  
+      // Add the cells to the new row
+      let authorIdCell = newRow.insertCell();
+      authorIdCell.textContent = nextAuthorId++;
+      let authorNameCell = newRow.insertCell();
+      authorNameCell.textContent = authorname;
+  
+      // Add the action buttons to the new row
+      let actionCell = newRow.insertCell();
+      let editButton = document.createElement("button");
+      editButton.textContent = "Edit";
+      editButton.onclick = function() { editRow(this); };
+      actionCell.appendChild(editButton);
+      
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.onclick = function() { deleteRow(this); };
+      actionCell.appendChild(deleteButton);
+  
+      // Reset the form
+      document.getElementById("add-form").reset();
+  });
+  
+  // Function to edit a row
+  function editRow(button) {
+      let row = button.parentNode.parentNode;
+      let authorNameCell = row.getElementsByTagName("td")[1];
+      let authorName = authorNameCell.textContent;
+      let newAuthorName = prompt("Enter the new author name:", authorName);
+      if (newAuthorName !== null) {
+          authorNameCell.textContent = newAuthorName;
+      }
+  }
+  
+  // Function to delete a row
+  function deleteRow(button) {
+      let row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+  }
+</script>
 </html>
