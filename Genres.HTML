@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gernes</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			border: 1px solid black;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color: #f2f2f2;
+		}
+		form {
+			margin-bottom: 20px;
+		}
+		input[type="submit"] {
+			margin-top: 10px;
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Genres Information</h1>
+
+	<!-- Add form -->
+	<form id="add-form">
+		<label for="gerneName">Genre Name:</label>
+		<input type="text" id="genreName" name="gerneName">
+		<label for="floorName">Floor Name:</label>
+		<input type="text" id="floorName" name="floorName">
+		<input type="submit" value="Add">
+	</form>
+
+	<!-- Table -->
+	<table>
+		<thead>
+			<tr>
+				<th>Genre ID</th>
+                <th>Genre Name</th>
+				<th>Floor Name</th>               
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+			<tr>
+                <td>1</td>
+				<td>Fiction</td>
+				<td>Fiction</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>2</td>
+				<td>Non-Fiction</td>
+				<td>Non-Fiction</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>3</td>
+				<td>Romance</td>
+				<td>Romance</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>4</td>
+				<td>Horror</td>
+				<td>Horror</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+// Function to delete a row from the table
+function deleteRow(button) {
+  // Traverse the DOM to get the table row element
+  var row = button.parentNode.parentNode;
+
+  // Remove the row from the table
+  row.parentNode.removeChild(row);
+}
+      </script>
+</body>
+</html>
