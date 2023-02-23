@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Floors</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			border: 1px solid black;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color: #f2f2f2;
+		}
+		form {
+			margin-bottom: 20px;
+		}
+		input[type="submit"] {
+			margin-top: 10px;
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Floor information</h1>
+
+	<!-- Add form -->
+	<form id="add-form">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name">
+		<label for="age">Age:</label>
+		<input type="text" id="age" name="age">
+		<input type="submit" value="Add">
+	</form>
+
+	<!-- Table -->
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Genre</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+			<tr>
+				<td>John</td>
+				<td>Romance</td>
+			</tr>
+			<tr>
+				<td>Jane</td>
+				<td>Horror</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+		// Add event listener to Add form
+		document.querySelector('#add-form').addEventListener('submit', function(event) {
+			event.preventDefault();
+			const name = document.querySelector('#name').value;
+			const age = document.querySelector('#age').value;
+			if (name && age) {
+				const table = document.querySelector('#table-body');
+				const row = document.createElement('tr');
+				row.innerHTML = `
+					<td>${name}</td>
+					<td>${age}</td>
+				`;
+				table.appendChild(row);
+				document.querySelector('#add-form').reset();
+			} else {
+				alert('Please enter name and age');
+			}
+		});
+	</script>
+</body>
+</html>
