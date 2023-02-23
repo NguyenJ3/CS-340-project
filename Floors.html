@@ -39,8 +39,8 @@
 	<form id="add-form">
 		<label for="name">Name:</label>
 		<input type="text" id="name" name="name">
-		<label for="age">Age:</label>
-		<input type="text" id="age" name="age">
+		<label for="Genre">Genre:</label>
+		<input type="text" id="Genre" name="Genre">
 		<input type="submit" value="Add">
 	</form>
 
@@ -69,18 +69,18 @@
 		document.querySelector('#add-form').addEventListener('submit', function(event) {
 			event.preventDefault();
 			const name = document.querySelector('#name').value;
-			const age = document.querySelector('#age').value;
-			if (name && age) {
+			const Genre = document.querySelector('#Genre').value;
+			if (name && Genre) {
 				const table = document.querySelector('#table-body');
 				const row = document.createElement('tr');
 				row.innerHTML = `
 					<td>${name}</td>
-					<td>${age}</td>
+					<td>${Genre}</td>
 				`;
 				table.appendChild(row);
 				document.querySelector('#add-form').reset();
 			} else {
-				alert('Please enter name and age');
+				alert('Please enter name and Genre');
 			}
 		});
 	</script>
