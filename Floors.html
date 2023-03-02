@@ -30,9 +30,39 @@
         input[type="submit"]:hover {
             background-color: #3e8e41;
         }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a class="active" href="#">Floors</a>
+        <a href="Homepage.html">Homepage</a>
+        <a href="books.html">Books</a>
+        <a href="genres.html">Genres</a>
+        <a href="Authors.html">Authors</a>
+    </div>
     <h1>Floor information</h1>
 
     <!-- Add form -->
