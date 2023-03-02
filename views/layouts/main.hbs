@@ -2,94 +2,75 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>My Webpage</title>
+    <title>{{title}}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+    </style>
   </head>
   <body>
-    <h1>Add Authors</h1>
-    <form id="add-form">
-      <label for="authorname">Author Name:</label>
-      <input type="text" id="authorname" name="authorname">
-      <button type="submit">Add</button>
-    </form>
-    <table>
-      <thead>
-        <tr>
-          <th>Author ID</th>
-          <th>Author Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        {{#each authors}}
-        <tr>
-          <td>{{id}}</td>
-          <td>{{name}}</td>
-          <td>
-            <button onclick="editRow(this)">Edit</button>
-            <button onclick="deleteRow(this)">Delete</button>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-    
-    <script id="author-template" type="text/x-handlebars-template">
-      <tr>
-        <td>{{id}}</td>
-        <td>{{name}}</td>
-        <td>
-          <button onclick="editRow(this)">Edit</button>
-          <button onclick="deleteRow(this)">Delete</button>
-        </td>
-      </tr>
-    </script>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/path/to/handlebars.js"></script>
-    <script>
-      let nextAuthorId = {{nextAuthorId}};
-      let authors = {{JSONstringify authors}};
-      let authorTemplate = Handlebars.compile($("#author-template").html());
 
-      $(document).ready(function() {
-        // Populate the table with existing authors
-        authors.forEach(function(author) {
-          $("#table-body").append(authorTemplate(author));
-        });
-  
-        // Add event listener to the form submission
-        $("#add-form").submit(function(event) {
-          event.preventDefault(); // prevent the form from actually submitting
-  
-          // Get the input value from the form
-          let authorname = $("#authorname").val();
-  
-          // Add a new row to the table
-          let authorId = nextAuthorId++;
-          let author = {id: authorId, name: authorname};
-          $("#table-body").append(authorTemplate(author));
-  
-          // Reset the form
-          $("#add-form")[0].reset();
-        });
-      });
-  
-      // Function to edit a row
-      function editRow(button) {
-        let row = button.parentNode.parentNode;
-        let authorNameCell = row.getElementsByTagName("td")[1];
-        let authorName = authorNameCell.textContent;
-        let newAuthorName = prompt("Enter the new author name:", authorName);
-        if (newAuthorName !== null) {
-          authorNameCell.textContent = newAuthorName;
-        }
-      }
-  
-      // Function to delete a row
-      function deleteRow(button) {
-        let row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-      }
-    </script>
+    <div class="navbar">
+      <a class="active" href="#">Authors</a>
+      <a href="Homepage.html">Homepage</a>
+      <a href="books.html">Books</a>
+      <a href="genres.html">Genres</a>
+      <a href="Floors.html">Floors</a>
+    </div>
+
+    <header>
+      <h1>{{title}}</h1>
+    </header>
+    
+    {{{body}}}
+    
   </body>
-  </html>
+</html>
