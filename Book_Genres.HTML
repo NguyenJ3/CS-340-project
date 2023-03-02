@@ -1,38 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Book-Genres</title>
-	<style>
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		th, td {
-			border: 1px solid black;
-			padding: 8px;
-			text-align: left;
-		}
-		th {
-			background-color: #f2f2f2;
-		}
-		form {
-			margin-bottom: 20px;
-		}
-		input[type="submit"] {
-			margin-top: 10px;
-			background-color: #4CAF50;
-			color: white;
-			padding: 10px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-		input[type="submit"]:hover {
-			background-color: #3e8e41;
-		}
-	</style>
+    <title>Floors</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
+	<div class="navbar">
+        <a class="active" href="#">Genres</a>
+        <a href="Homepage.html">Homepage</a>
+        <a href="books.html">Books</a>
+        <a href="Floors.html">Floors</a>
+        <a href="Authors.html">Authors</a>
+    </div>
 	<h1>Book-Genre Connections</h1>
 
 	<!-- Add form -->
