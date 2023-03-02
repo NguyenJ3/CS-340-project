@@ -30,9 +30,39 @@
         input[type="submit"]:hover {
             background-color: #3e8e41;
         }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a class="active" href="#">Authors</a>
+        <a href="Homepage.html">Homepage</a>
+        <a href="books.html">Books</a>
+        <a href="genres.html">Genres</a>
+        <a href="Floors.html">Floors</a>
+    </div>
     <h1>Author Information</h1>
 
     <!-- Add form -->
@@ -139,5 +169,20 @@
       let row = button.parentNode.parentNode;
       row.parentNode.removeChild(row);
   }
+
+  // Add navigation bar
+    let navBar = document.createElement("nav");
+    let ul = document.createElement("ul");
+    let homeLink = document.createElement("a");
+    homeLink.href = "index.html";
+    homeLink.textContent = "Home";
+    let authorsLink = document.createElement("a");
+    authorsLink.href = "authors.html";
+    authorsLink.textContent = "Authors";
+    let booksLink = document.createElement("a");
+    booksLink.href = "books.html";
+    booksLink.textContent = "Books";
+    navBar.appendChild(ul);
+    document.body.insertBefore(navBar, document.body.firstChild);
 </script>
 </html>
