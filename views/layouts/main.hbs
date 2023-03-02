@@ -1,45 +1,95 @@
-<!-- main.hbs-->
-
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>My Website</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        padding: 20px;
-      }
-      h1 {
-        text-align: center;
-      }
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      li {
-        margin-bottom: 10px;
-      }
-      a {
-        display: block;
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        color: #333;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-      }
-      a:hover {
-        background-color: #f0f0f0;
-      }
-    </style>
-</head>
-<body>
+    <title>My Webpage</title>
+  </head>
+  <body>
+    <h1>Add Authors</h1>
+    <form id="add-form">
+      <label for="authorname">Author Name:</label>
+      <input type="text" id="authorname" name="authorname">
+      <button type="submit">Add</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Author ID</th>
+          <th>Author Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        {{#each authors}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{name}}</td>
+          <td>
+            <button onclick="editRow(this)">Edit</button>
+            <button onclick="deleteRow(this)">Delete</button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    
+    <script id="author-template" type="text/x-handlebars-template">
+      <tr>
+        <td>{{id}}</td>
+        <td>{{name}}</td>
+        <td>
+          <button onclick="editRow(this)">Edit</button>
+          <button onclick="deleteRow(this)">Delete</button>
+        </td>
+      </tr>
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/path/to/handlebars.js"></script>
+    <script>
+      let nextAuthorId = {{nextAuthorId}};
+      let authors = {{JSONstringify authors}};
+      let authorTemplate = Handlebars.compile($("#author-template").html());
 
-    {{{body}}}
-
-</body>
-</html>
+      $(document).ready(function() {
+        // Populate the table with existing authors
+        authors.forEach(function(author) {
+          $("#table-body").append(authorTemplate(author));
+        });
+  
+        // Add event listener to the form submission
+        $("#add-form").submit(function(event) {
+          event.preventDefault(); // prevent the form from actually submitting
+  
+          // Get the input value from the form
+          let authorname = $("#authorname").val();
+  
+          // Add a new row to the table
+          let authorId = nextAuthorId++;
+          let author = {id: authorId, name: authorname};
+          $("#table-body").append(authorTemplate(author));
+  
+          // Reset the form
+          $("#add-form")[0].reset();
+        });
+      });
+  
+      // Function to edit a row
+      function editRow(button) {
+        let row = button.parentNode.parentNode;
+        let authorNameCell = row.getElementsByTagName("td")[1];
+        let authorName = authorNameCell.textContent;
+        let newAuthorName = prompt("Enter the new author name:", authorName);
+        if (newAuthorName !== null) {
+          authorNameCell.textContent = newAuthorName;
+        }
+      }
+  
+      // Function to delete a row
+      function deleteRow(button) {
+        let row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+      }
+    </script>
+  </body>
+  </html>
