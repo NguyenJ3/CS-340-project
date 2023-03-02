@@ -1,0 +1,110 @@
+   <title>Authors</title>
+   <body>
+    <h1>Author Information</h1>
+
+    <!-- Add form -->
+    <form id="add-form">
+        <label for="authorname">Author Name:</label>
+        <input type="text" id="authorname" name="authorname">
+        <input type="submit" value="Add">
+    </form>
+
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Author ID</th>
+                <th>Author Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Bob Johnson</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Emily Wilson</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+  let nextAuthorId = 5; // the next available ID for a new author row
+
+  // Add event listener to the form submission
+  document.getElementById("add-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // prevent the form from actually submitting
+  
+      // Get the input value from the form
+      let authorname = document.getElementById("authorname").value;
+  
+      // Add a new row to the table
+      let tableBody = document.getElementById("table-body");
+      let newRow = tableBody.insertRow();
+  
+      // Add the cells to the new row
+      let authorIdCell = newRow.insertCell();
+      authorIdCell.textContent = nextAuthorId++;
+      let authorNameCell = newRow.insertCell();
+      authorNameCell.textContent = authorname;
+  
+      // Add the action buttons to the new row
+      let actionCell = newRow.insertCell();
+      let editButton = document.createElement("button");
+      editButton.textContent = "Edit";
+      editButton.onclick = function() { editRow(this); };
+      actionCell.appendChild(editButton);
+      
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.onclick = function() { deleteRow(this); };
+      actionCell.appendChild(deleteButton);
+  
+      // Reset the form
+      document.getElementById("add-form").reset();
+  });
+  
+  // Function to edit a row
+  function editRow(button) {
+      let row = button.parentNode.parentNode;
+      let authorNameCell = row.getElementsByTagName("td")[1];
+      let authorName = authorNameCell.textContent;
+      let newAuthorName = prompt("Enter the new author name:", authorName);
+      if (newAuthorName !== null) {
+          authorNameCell.textContent = newAuthorName;
+      }
+  }
+  
+  // Function to delete a row
+  function deleteRow(button) {
+      let row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+  }
+
+</script>
