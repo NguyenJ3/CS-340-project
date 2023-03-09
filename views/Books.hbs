@@ -18,69 +18,41 @@
 	</form>
 
 	<!-- Table -->
-	<table>
-		<thead>
-			<tr>
-				<th>Book ID</th>
-                <th>Book Name</th>
-				<th>Author Name</th>
-				<th>Genre</th>
-				<th>Price</th>
-				<th>Total Count</th>                
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody id="table-body">
-			<tr>
-                <td>1</td>
-				<td>Yellow Face</td>
-				<td>R.F Kuang</td>
-				<td>Fiction</td>
-				<td>15.00</td>
-                <td>4</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>2</td>
-				<td>Spare</td>
-				<td>Prince Harry</td>
-				<td>Non-Fiction</td>
-				<td>18.00</td>
-                <td>10</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>3</td>
-				<td>Final Offer</td>
-				<td>Lauren Asher</td>
-				<td>Romance</td>
-				<td>14.00</td>
-                <td>5</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>4</td>
-				<td>Never Lie</td>
-				<td>Frieda McFadden</td>
-				<td>Horror</td>
-				<td>4.00</td>
-                <td>7</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<table id="book-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr >
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr data-value={{this.bookID}}>
+            <td>{{this.bookID}}</td>
+            <td>{{this.bookName}}</td>
+            <td>{{this.authorName}}</td>
+			<td>{{this.genreName}}</td>
+		    <td>{{this.price}}</td>
+			<td>{{this.totalCount}}</td>
+            <td><button onclick="deleteBook({{this.bookID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
 
 	<script>
 // Function to delete a row from the table

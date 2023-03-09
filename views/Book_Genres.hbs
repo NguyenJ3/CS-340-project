@@ -15,49 +15,37 @@
 	</form>
 
 	<!-- Table -->
-	<table>
-		<thead>
-			<tr>
-				<th>Book Name</th>
-                <th>Genre Name</th>         
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody id="table-body">
-			<tr>
-                <td>Yellow Face</td>
-				<td>Fiction</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>Spare</td>
-				<td>Non-Fiction</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>Final Offer</td>
-				<td>Romance</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-			<tr>
-                <td>Never Lie</td>
-				<td>Horror</td>
-				<td>
-					<button onclick="editRow(this)">Edit</button>
-					<button onclick="deleteRow(this)">Delete</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+
+{{!-- Create a table --}}
+<table id="bookGenre-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr >
+            <th>bookName</th>
+			<th>genreName</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr data-value={{this.bookID}}>
+            <td>{{this.bookName}}</td>
+            <td>{{this.genreName}}</td>
+            <td><button onclick="deletebookGenre({{this.bookID}},{{this.genreID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
 
 	<script>
 // Function to delete a row from the table
