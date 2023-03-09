@@ -6,7 +6,7 @@ function deleteAuthor(authorID){
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "/delete-author-ajax", true);
+    xhttp.open("DELETE", "/delete-authors-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
