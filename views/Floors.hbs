@@ -1,0 +1,124 @@
+ 
+ <title> Floors</title>
+ <body>
+ <h1>Floor information</h1>
+
+    <!-- Add form -->
+    <form id="add-form">
+        <label for="floorname">Floor Name:</label>
+        <input type="text" id="floorname" name="floorname">
+        <input type="submit" value="Add">
+    </form>
+
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Floor ID</th>
+                <th>Floor Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr>
+                <td>1</td>
+                <td>Fiction</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Non-fiction</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Horror</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Romance</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+  let nextFloorId = 5; // the next available ID for a new floor row
+
+  // Add event listener to the form submission
+  document.getElementById("add-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // prevent the form from actually submitting
+  
+      // Get the input value from the form
+      let floorname = document.getElementById("floorname").value;
+  
+      // Add a new row to the table
+      let tableBody = document.getElementById("table-body");
+      let newRow = tableBody.insertRow();
+  
+      // Add the cells to the new row
+      let floorIdCell = newRow.insertCell();
+      floorIdCell.textContent = nextFloorId++;
+      let floorNameCell = newRow.insertCell();
+      floorNameCell.textContent = floorname;
+  
+      // Add the action buttons to the new row
+      let actionCell = newRow.insertCell();
+      let editButton = document.createElement("button");
+      editButton.textContent = "Edit";
+      editButton.classList.add("edit-button");
+      editButton.addEventListener("click", function() {
+          let originalFloorName = floorNameCell.textContent;
+          let newFloorName = prompt("Enter the new floor name", originalFloorName);
+          if (newFloorName !== null && newFloorName !== "") {
+              floorNameCell.textContent = newFloorName;
+          }
+      });
+      actionCell.appendChild(editButton);
+  
+      let deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.classList.add("delete-button");
+      deleteButton.addEventListener("click", function() {
+          if (confirm("Are you sure you want to delete this row?")) {
+              newRow.remove();
+          }
+      });
+      actionCell.appendChild(deleteButton);
+  
+      // Reset the form
+      document.getElementById("add-form").reset();
+  });
+  
+  // Edit function for the Edit button
+  function editRow(button) {
+      let row = button.parentNode.parentNode;
+      let floorNameCell = row.querySelector("td:nth-child(2)");
+      let originalFloorName = floorNameCell.textContent;
+      let newFloorName = prompt("Enter the new floor name", originalFloorName);
+      if (newFloorName !== null && newFloorName !== "") {
+          floorNameCell.textContent = newFloorName;
+      }
+  }
+  
+  // Delete function for the Delete button
+  function deleteRow(button) {
+      let row = button.parentNode.parentNode;
+      if (confirm("Are you sure you want to delete this row?")) {
+          row.remove();
+      }
+  }
+</script>
