@@ -1,0 +1,68 @@
+<!--Everything in this file will be inserted into the body of main.hbs -->
+
+	<!-- Add form -->
+    <title>Genres</title>
+    <body>
+	<form id="add-form">
+		<label for="bookName">Book Name:</label>
+		<input type="text" id="bookName" name="bookName">
+		<label for="gerneName">Genre Name:</label>
+		<input type="text" id="gerneName" name="gerneName">
+		<input type="submit" value="Add">
+	</form>
+
+	<!-- Table -->
+	<table>
+		<thead>
+			<tr>
+				<th>Book Name</th>
+                <th>Genre Name</th>         
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody id="table-body">
+			<tr>
+                <td>Yellow Face</td>
+				<td>Fiction</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>Spare</td>
+				<td>Non-Fiction</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>Final Offer</td>
+				<td>Romance</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+			<tr>
+                <td>Never Lie</td>
+				<td>Horror</td>
+				<td>
+					<button onclick="editRow(this)">Edit</button>
+					<button onclick="deleteRow(this)">Delete</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+// Function to delete a row from the table
+function deleteRow(button) {
+  // Traverse the DOM to get the table row element
+  var row = button.parentNode.parentNode;
+  // Remove the row from the table
+  row.parentNode.removeChild(row);
+}
+      </script>
+</body>
