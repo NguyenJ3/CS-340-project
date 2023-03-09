@@ -84,6 +84,58 @@ app.delete('/delete-genre-ajax', function(req,res,next){
 
 });
 
+app.get('/', function(req, res) {
+    let query2 = "SELECT Authors.authorID as authorID, Authors.authorName as authorName FROM Authors GROUP BY Authors.authorID ORDER BY Authors.authorID ASC;";
+        
+    db.pool.query(query2, function(error, rows, fields) {
+        res.render('index',{data: rows}); 
+    });
+});   
+
+app.post('/add-author-ajax', function(req, res) {
+    let data = req.body;
+
+    let query1 = `INSERT INTO Authors(authorName) VALUES ('${data.authorName}');`;
+    db.pool.query(query1, function(error, rows, fields) {
+        if(error) {
+            console.log(error)
+            res.sendStatus(400);
+        } else {
+            let query2 = `SELECT Authors.authorID as authorID, Authors.authorName as authorName FROM Authors GROUP BY Authors.authorID ORDER BY Authors.authorID ASC;`;
+            db.pool.query(query2, function(error,rows,fields) {
+                if(error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.delete('/delete-author-ajax', function(req,res,next) {
+    let data = req.body;
+    let authorID = parseInt(data.id);
+    let deleteAuthor_Books = `DELETE FROM Author_Books WHERE authorID = ?`;
+    let deleteAuthors = `DELETE FROM Authors WHERE authorID = ?`;
+
+    db.pool.query(deleteAuthor_Books, [authorID], function(error,rows,fields) {
+        if(error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            db.pool.query(deleteAuthors, [authorID], function(error,rows,fields) {
+                if(error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.sendStatus(204);
+                }
+            });
+        }
+    });
+});
 
 /*
     LISTENER
