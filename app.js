@@ -31,7 +31,12 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
 
     app.get('/books', function(req, res)
     {
-        res.render('Books');
+        let query1 = "SELECT Books.bookID as bookID, Books.bookName as bookName, Authors.authorName as authorName, Genres.genreName as genreName, Books.price as price, Books.totalCount as totalCount FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID JOIN Authors on Books.authorID = Authors.authorID ORDER BY Books.bookID ASC";
+        
+        db.pool.query(query1, function(error,rows,fields){
+            let book = rows;
+            res.render('Books',{data: book});
+        })
     });
 
     app.get("/floors", function(req,res){
@@ -56,10 +61,15 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
 
     app.get('/bookGenres', function(req,res)
     {
-        res.render('Book_Genres');
+        let query1 = "SELECT Book_Genres.bookID as bookID, Book_Genres.genreID as genreID, Books.bookName as bookName, Genres.genreName as genreName FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID ORDER BY Book_Genres.BookID ASC;";
+        db.pool.query(query1, function(error,rows,fields){
+            let genre = rows;
+            res.render('Book_Genres',{data: genre});
+        })
     });
 
 
+//post is for add
 app.post('/add-genre-ajax', function(req, res)
 {
     let data = req.body;
@@ -87,6 +97,8 @@ app.post('/add-genre-ajax', function(req, res)
     });
 });
 
+
+//Delete is for delete
 app.delete('/delete-genre-ajax', function(req,res,next){
     let data = req.body;
     let genreID = parseInt(data.id);
@@ -114,6 +126,7 @@ app.delete('/delete-genre-ajax', function(req,res,next){
 
 });
 
+//Put is for UPDATE
 app.put('/put-genre-ajax', function(req,res,next){
     let data = req.body;
     let floor = parseInt(data.floor);
