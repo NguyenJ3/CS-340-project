@@ -26,7 +26,11 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
 
     app.get('/authors', function(req, res)
     {
-        res.render('Authors');
+        let query1 = "SELECT * FROM Authors ORDER BY authorID ASC;";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('Authors',{data: rows}); 
+        })
     });
 
     app.get('/books', function(req, res)
