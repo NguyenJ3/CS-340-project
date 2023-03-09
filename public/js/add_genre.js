@@ -47,25 +47,32 @@ addRowToTable = (data) =>{
     let genreNameCell = document.createElement("TD");
     let floorNameCell = document.createElement("TD");
 
-    let deleteCell = document.createElement("TD");
+    let deleteCellCase = document.createElement("TD");
 
     idCell.innerText = newRow.genreID;
     genreNameCell.innerText = newRow.genreName;
     floorNameCell.innerText = newRow.floorName;
 
-    deleteCell = document.createElement("button");
+    let deleteCell = document.createElement("button");
     deleteCell.innerHTML = "Delete";
     deleteCell.onclick = function(){
-        deletePerson(newRow.genreID);
+        deleteGenre(newRow.genreID);
     };
 
+    deleteCellCase.appendChild(deleteCell);
     row.appendChild(idCell);
     row.appendChild(genreNameCell);
     row.appendChild(floorNameCell);
-
-    row.appendChild(deleteCell);
+    row.appendChild(deleteCellCase);
     row.setAttribute('data-value', newRow.genreID);
 
     currentTable.appendChild(row);
+
+
+    let selectMenu = document.getElementById("mySelect");
+    let option = document.createElement("option");
+    option.text = newRow.genreName;
+    option.value = newRow.genreID;
+    selectMenu.add(option);
 
 }

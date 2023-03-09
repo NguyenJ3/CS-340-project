@@ -1,8 +1,10 @@
+<!-- main.hbs-->
+
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    <title>My Website</title>
     <style>
         table {
             border-collapse: collapse;
@@ -55,22 +57,19 @@
             background-color: #4CAF50;
         }
     </style>
-  </head>
-  <body>
+</head>
+<body>
 
     <div class="navbar">
-      <a class="active" href="#">Authors</a>
-      <a href="Homepage.html">Homepage</a>
-      <a href="books.html">Books</a>
-      <a href="genres.html">Genres</a>
-      <a href="Floors.html">Floors</a>
+      <a href=".">Homepage</a>
+      <a href="authors">Authors</a>
+      <a href="books">Books</a>
+      <a href="genres">Genres</a>
+      <a href="floors">Floors</a>
+      <a href="bookGenres">Book Genres</a>
     </div>
 
-    <header>
-      <h1>{{title}}</h1>
-    </header>
-    
     {{{body}}}
-    
-  </body>
+
+</body>
 </html>
