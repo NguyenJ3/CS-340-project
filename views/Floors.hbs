@@ -1,124 +1,58 @@
- 
- <title> Floors</title>
- <body>
- <h1>Floor information</h1>
+<h1>Floors Information</h1>
 
-    <!-- Add form -->
-    <form id="add-form">
-        <label for="floorname">Floor Name:</label>
-        <input type="text" id="floorname" name="floorname">
-        <input type="submit" value="Add">
-    </form>
+{{!-- Form to add a record to the table --}}
+<form id="add-floor-form">
+    <select name="input-floorName" id="input-floorName-dropdown">
+        <option value="">Select a Floor</option>
+        {{#each floors}}
+        <option value="{{this.floorName}}">{{this.floorName}}</option>
+        {{/each}}
+    </select>
 
-    <!-- Table -->
-    <table>
-        <thead>
-            <tr>
-                <th>Floor ID</th>
-                <th>Floor Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <tr>
-                <td>1</td>
-                <td>Fiction</td>
-                <td>
-                    <button onclick="editRow(this)">Edit</button>
-                    <button onclick="deleteRow(this)">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Non-fiction</td>
-                <td>
-                    <button onclick="editRow(this)">Edit</button>
-                    <button onclick="deleteRow(this)">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Horror</td>
-                <td>
-                    <button onclick="editRow(this)">Edit</button>
-                    <button onclick="deleteRow(this)">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Romance</td>
-                <td>
-                    <button onclick="editRow(this)">Edit</button>
-                    <button onclick="deleteRow(this)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>
-<script>
-  let nextFloorId = 5; // the next available ID for a new floor row
+    <input type="submit">
+</form>
 
-  // Add event listener to the form submission
-  document.getElementById("add-form").addEventListener("submit", function(event) {
-      event.preventDefault(); // prevent the form from actually submitting
-  
-      // Get the input value from the form
-      let floorname = document.getElementById("floorname").value;
-  
-      // Add a new row to the table
-      let tableBody = document.getElementById("table-body");
-      let newRow = tableBody.insertRow();
-  
-      // Add the cells to the new row
-      let floorIdCell = newRow.insertCell();
-      floorIdCell.textContent = nextFloorId++;
-      let floorNameCell = newRow.insertCell();
-      floorNameCell.textContent = floorname;
-  
-      // Add the action buttons to the new row
-      let actionCell = newRow.insertCell();
-      let editButton = document.createElement("button");
-      editButton.textContent = "Edit";
-      editButton.classList.add("edit-button");
-      editButton.addEventListener("click", function() {
-          let originalFloorName = floorNameCell.textContent;
-          let newFloorName = prompt("Enter the new floor name", originalFloorName);
-          if (newFloorName !== null && newFloorName !== "") {
-              floorNameCell.textContent = newFloorName;
-          }
-      });
-      actionCell.appendChild(editButton);
-  
-      let deleteButton = document.createElement("button");
-      deleteButton.textContent = "Delete";
-      deleteButton.classList.add("delete-button");
-      deleteButton.addEventListener("click", function() {
-          if (confirm("Are you sure you want to delete this row?")) {
-              newRow.remove();
-          }
-      });
-      actionCell.appendChild(deleteButton);
-  
-      // Reset the form
-      document.getElementById("add-form").reset();
-  });
-  
-  // Edit function for the Edit button
-  function editRow(button) {
-      let row = button.parentNode.parentNode;
-      let floorNameCell = row.querySelector("td:nth-child(2)");
-      let originalFloorName = floorNameCell.textContent;
-      let newFloorName = prompt("Enter the new floor name", originalFloorName);
-      if (newFloorName !== null && newFloorName !== "") {
-          floorNameCell.textContent = newFloorName;
-      }
-  }
-  
-  // Delete function for the Delete button
-  function deleteRow(button) {
-      let row = button.parentNode.parentNode;
-      if (confirm("Are you sure you want to delete this row?")) {
-          row.remove();
-      }
-  }
-</script>
+{{!-- Create a table --}}
+<table id="floor-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+   {{!-- Body section --}}
+<tbody>
+    {{#if data.length}}
+        {{!-- For each row, print the floorID and floorName in order --}}
+        {{#each data}}
+        <tr data-value={{this.floorID}}>
+            <td>{{this.floorID}}</td>
+            <td>{{this.floorName}}</td>
+            <td><button onclick="deleteFloor({{this.floorID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    {{else}}
+        {{!-- If there is no data, print the preset data --}}
+        {{#each floors}}
+        <tr data-value="{{this.floorID}}">
+            <td>{{this.floorID}}</td>
+            <td>{{this.floorName}}</td>
+            <td><button onclick="deleteFloor({{this.floorID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    {{/if}}
+</tbody>
+</table>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_Floors.js"></script>
