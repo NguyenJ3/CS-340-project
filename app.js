@@ -6,7 +6,7 @@ var app     = express();            // We need to instantiate an express object 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
-PORT        = 10419;                 // Set a port number at the top so it's easy to change in the future
+PORT        =  10419;               // Set a port number at the top so it's easy to change in the future
 
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
@@ -43,9 +43,14 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
         })
     });
 
-    app.get("/floors", function(req,res){
-        res.render('Floors');
+    app.get('/floors', function(req, res)
+{
+    let query1 = "SELECT * FROM Floors ORDER BY floorID ASC;";
+
+    db.pool.query(query1, function(error, rows, fields){
+        res.render('Floors', {data: rows}); 
     });
+});
 
     app.get('/genres', function(req,res)
     {
@@ -101,6 +106,57 @@ app.post('/add-genre-ajax', function(req, res)
     });
 });
 
+app.post('/add-authors-ajax', function(req, res) {
+    let data = req.body;
+  
+    let query1 = `INSERT INTO Authors(authorName) VALUES (?)`;
+  
+    db.pool.query(query1, [data.authorName], function(error, rows, fields){
+        if(error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let query2 = `SELECT authorID, authorName FROM Authors WHERE authorID = LAST_INSERT_ID();`;
+  
+            db.pool.query(query2, function(error, rows, fields) {
+                if(error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+  });
+
+  // post is for add
+app.post('/add-floor-ajax', function(req, res)
+{
+    let data = req.body;
+
+    let query1 = `INSERT INTO Floors(floorName) VALUES ('${data.floorName}');`;
+    db.pool.query(query1, function(error, rows, fields){
+        if(error){
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            let query2 = `SELECT Floors.floorID as floorID, Floors.floorName as floorName FROM Floors ORDER BY Floors.floorID ASC;`;
+            db.pool.query(query2,function(error,rows,fields){
+                if(error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    });
+});
 
 //Delete is for delete
 app.delete('/delete-genre-ajax', function(req,res,next){
@@ -129,6 +185,23 @@ app.delete('/delete-genre-ajax', function(req,res,next){
     });
 
 });
+app.delete('/delete-authors-ajax', function(req, res) {
+    let data = req.body;
+  
+    let query1 = `DELETE FROM Authors WHERE authorID = ?`;
+  
+    db.pool.query(query1, [data.id], function(error, rows, fields){
+      if(error) {
+        console.log(error);
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+  });
+  
+  
+  
 
 //Put is for UPDATE
 app.put('/put-genre-ajax', function(req,res,next){
