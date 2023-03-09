@@ -21,14 +21,44 @@ var db = require('./database/db-connector')
 */
 app.get('/', function(req, res)                 // This is the basic syntax for what is called a 'route'
     {
+        res.render('Homepage');
+    });                                         // requesting the web site.
+
+    app.get('/authors', function(req, res)
+    {
+        res.render('Authors');
+    });
+
+    app.get('/books', function(req, res)
+    {
+        res.render('Books');
+    });
+
+    app.get("/floors", function(req,res){
+        res.render('Floors');
+    });
+
+    app.get('/genres', function(req,res)
+    {
         let query1 = "SELECT Genres.genreID as genreID, Genres.genreName as genreName, Floors.floorName as floorName FROM Genres JOIN Floors on Genres.floorID = Floors.floorID GROUP BY Genres.genreID ORDER BY Genres.genreID ASC;";
         
-        db.pool.query(query1, function(error, rows, fields){
-            res.render('index',{data: rows}); 
-        })
+        let query2 = "SELECT * FROM Floors;";
 
- 
-    });                                         // requesting the web site.
+        db.pool.query(query1, function(error, rows, fields){
+            let genre = rows;
+            db.pool.query(query2, (error,rows, fields) =>{
+                let floors = rows;
+                res.render('index',{data: genre, floors: floors}); 
+            })
+
+        })
+    });
+
+    app.get('/bookGenres', function(req,res)
+    {
+        res.render('Book_Genres');
+    });
+
 
 app.post('/add-genre-ajax', function(req, res)
 {
@@ -84,58 +114,36 @@ app.delete('/delete-genre-ajax', function(req,res,next){
 
 });
 
-app.get('/', function(req, res) {
-    let query2 = "SELECT Authors.authorID as authorID, Authors.authorName as authorName FROM Authors GROUP BY Authors.authorID ORDER BY Authors.authorID ASC;";
-        
-    db.pool.query(query2, function(error, rows, fields) {
-        res.render('index',{data: rows}); 
-    });
-});   
-
-app.post('/add-author-ajax', function(req, res) {
+app.put('/put-genre-ajax', function(req,res,next){
     let data = req.body;
+    let floor = parseInt(data.floor);
+    let genre = parseInt(data.genre);
 
-    let query1 = `INSERT INTO Authors(authorName) VALUES ('${data.authorName}');`;
-    db.pool.query(query1, function(error, rows, fields) {
-        if(error) {
-            console.log(error)
+    let queryUpdateFloor = `UPDATE Genres SET floorID = ? WHERE genreID = ?`;
+    let selectFloor = `SELECT * FROM Floors WHERE floorID = ?`;
+
+    db.pool.query(queryUpdateFloor,[floor, genre], function(error,rows,fields){
+        if(error){
+            console.log(error);
             res.sendStatus(400);
-        } else {
-            let query2 = `SELECT Authors.authorID as authorID, Authors.authorName as authorName FROM Authors GROUP BY Authors.authorID ORDER BY Authors.authorID ASC;`;
-            db.pool.query(query2, function(error,rows,fields) {
-                if(error) {
+        }
+        else
+        {
+            // Run the second query
+            db.pool.query(selectFloor, [floor], function(error, rows, fields) {
+
+                if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
                     res.send(rows);
                 }
-            });
+            })
         }
-    });
-});
+    })
 
-app.delete('/delete-author-ajax', function(req,res,next) {
-    let data = req.body;
-    let authorID = parseInt(data.id);
-    let deleteAuthor_Books = `DELETE FROM Author_Books WHERE authorID = ?`;
-    let deleteAuthors = `DELETE FROM Authors WHERE authorID = ?`;
+})
 
-    db.pool.query(deleteAuthor_Books, [authorID], function(error,rows,fields) {
-        if(error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            db.pool.query(deleteAuthors, [authorID], function(error,rows,fields) {
-                if(error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    res.sendStatus(204);
-                }
-            });
-        }
-    });
-});
 
 /*
     LISTENER
