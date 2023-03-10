@@ -130,33 +130,27 @@ app.post('/add-authors-ajax', function(req, res) {
     });
   });
 
-  // post is for add
-app.post('/add-floor-ajax', function(req, res)
-{
+  app.post('/add-floor-ajax', function(req, res) {
     let data = req.body;
-
-    let query1 = `INSERT INTO Floors(floorName) VALUES ('${data.floorName}');`;
-    db.pool.query(query1, function(error, rows, fields){
-        if(error){
-            console.log(error)
+  
+    let query = `INSERT INTO Floors(floorName) VALUES ('${data.floorName}');`;
+    db.pool.query(query, function(error, rows, fields) {
+      if (error) {
+        console.log(error);
+        res.sendStatus(400);
+      } else {
+        let query = `SELECT * FROM Floors;`;
+        db.pool.query(query, function(error, rows, fields) {
+          if (error) {
+            console.log(error);
             res.sendStatus(400);
-        }
-        else
-        {
-            let query2 = `SELECT Floors.floorID as floorID, Floors.floorName as floorName FROM Floors ORDER BY Floors.floorID ASC;`;
-            db.pool.query(query2,function(error,rows,fields){
-                if(error){
-                    console.log(error);
-                    res.sendStatus(400);
-                }
-                else
-                {
-                    res.send(rows);
-                }
-            })
-        }
+          } else {
+            res.send(rows);
+          }
+        });
+      }
     });
-});
+  });
 
 //Delete is for delete
 app.delete('/delete-genre-ajax', function(req,res,next){
@@ -202,7 +196,20 @@ app.delete('/delete-authors-ajax', function(req, res) {
   
   
   
-
+  app.delete('/delete-floors-ajax', function(req, res) {
+    let data = req.body;
+  
+    let query1 = `DELETE FROM Floors WHERE floorID = ?`;
+  
+    db.pool.query(query1, [data.id], function(error, rows, fields){
+      if(error) {
+        console.log(error);
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+});
 //Put is for UPDATE
 app.put('/put-genre-ajax', function(req,res,next){
     let data = req.body;
