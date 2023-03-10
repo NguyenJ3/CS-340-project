@@ -109,14 +109,14 @@ app.post('/add-genre-ajax', function(req, res)
 app.post('/add-authors-ajax', function(req, res) {
     let data = req.body;
   
-    let query1 = `INSERT INTO Authors(authorName) VALUES (?)`;
+    let query1 = `INSERT INTO Authors(authorName) VALUES ('${data.authorName}');`;
   
-    db.pool.query(query1, [data.authorName], function(error, rows, fields){
+    db.pool.query(query1, function(error, rows, fields){
         if(error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            let query2 = `SELECT authorID, authorName FROM Authors WHERE authorID = LAST_INSERT_ID();`;
+            let query2 = `SELECT authorID, authorName FROM Authors ORDER BY Authors.authorID ASC;`;
   
             db.pool.query(query2, function(error, rows, fields) {
                 if(error) {
@@ -130,7 +130,7 @@ app.post('/add-authors-ajax', function(req, res) {
     });
   });
 
-  app.post('/add-floor-ajax', function(req, res) {
+  app.post('/add-floors-ajax', function(req, res) {
     let data = req.body;
   
     let query = `INSERT INTO Floors(floorName) VALUES ('${data.floorName}');`;

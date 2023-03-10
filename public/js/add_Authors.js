@@ -1,66 +1,67 @@
 let addAuthorForm = document.getElementById('add-author-form');
 
 addAuthorForm.addEventListener("submit", function(e){
-  e.preventDefault();
+    e.preventDefault();
 
-  let inputAuthorName = document.getElementById("input-authorName");
+    let inputAuthorName = document.getElementById("input-authorName");
 
-  let authorNameValue = inputAuthorName.value;
+    let authorNameValue = inputAuthorName.value;
 
-  let data = {
-      authorName: authorNameValue
-  };
+    let data = {
+        authorName: authorNameValue
+    };
 
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "/add-authors-ajax", true);
-  xhttp.setRequestHeader("Content-type", "application/json");
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/add-authors-ajax", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
 
-  xhttp.onreadystatechange = () => {
-      if(xhttp.readyState == 4 && xhttp.status == 200){
-          addRowToTable(xhttp.response);
+    xhttp.onreadystatechange = () => {
+        if(xhttp.readyState == 4 && xhttp.status == 200){
+            addRowToTable(xhttp.response);
 
-          inputAuthorName.value = '';
-      }
-      else if(xhttp.readyState == 4 && xhttp.status != 200){
-          console.log("There was an error with the input.");
-      }
-  };
+            inputAuthorName.value = '';
+        }
+        else if(xhttp.readyState == 4 && xhttp.status != 200){
+            console.log("There was an error with the input.");
+        }
+    };
 
-  xhttp.send(JSON.stringify(data));
+    xhttp.send(JSON.stringify(data));
 });
 
 addRowToTable = (data) =>{
 
     let currentTable = document.getElementById("author-table");
-  
+
     let newRowIndex = currentTable.rows.length;
-  
+
     let parsedData = JSON.parse(data);
-  
-    if (parsedData.length > 0) {
-      let newRow = parsedData[parsedData.length - 1];
-  
-      let row = document.createElement("TR");
-      let idCell = document.createElement("TD");
-      let authorNameCell = document.createElement("TD");
-  
-      let deleteCellCase = document.createElement("TD");
-  
-      idCell.innerText = newRow.authorID;
-      authorNameCell.innerText = newRow.authorName;
-  
-      let deleteCell = document.createElement("button");
-      deleteCell.innerHTML = "Delete";
-      deleteCell.onclick = function(){
-          deleteAuthor(newRow.authorID);
-      };
-  
-      deleteCellCase.appendChild(deleteCell);
-      row.appendChild(idCell);
-      row.appendChild(authorNameCell);
-      row.appendChild(deleteCellCase);
-      row.setAttribute('data-value', newRow.authorID);
-  
-      currentTable.appendChild(row);
-    }
-  }
+    let newRow = parsedData[parsedData.length - 1];
+
+    let row = document.createElement("TR");
+    let idCell = document.createElement("TD");
+    let authorNameCell = document.createElement("TD");
+
+    let deleteCellCase = document.createElement("TD");
+
+    let deleteCell = document.createElement("TD");
+
+    idCell.innerText = newRow.authorID;
+    authorNameCell.innerText = newRow.authorName;
+
+    deleteCell = document.createElement("button");
+    deleteCell.innerHTML = "Delete";
+    deleteCell.onclick = function(){
+        deleteAuthor(newRow.authorID);
+    };
+
+    deleteCellCase.appendChild(deleteCell);
+    row.appendChild(idCell);
+    row.appendChild(authorNameCell);
+    row.appendChild(deleteCellCase);
+
+    row.setAttribute('data-value', newRow.authorID);
+
+    currentTable.appendChild(row);
+
+}
