@@ -12,7 +12,7 @@ addFloorForm.addEventListener("submit", function(e){
     };
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/add-floor-ajax", true);
+    xhttp.open("POST", "/add-floors-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     xhttp.onreadystatechange = () => {
