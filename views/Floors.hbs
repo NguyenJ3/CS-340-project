@@ -2,12 +2,8 @@
 
 {{!-- Form to add a record to the table --}}
 <form id="add-floor-form">
-    <select name="input-floorName" id="input-floorName-dropdown">
-        <option value="">Select a Floor</option>
-        {{#each floors}}
-        <option value="{{this.floorName}}">{{this.floorName}}</option>
-        {{/each}}
-    </select>
+   <label for="input-floorName">Floor Name: </label>
+   <input type="text" name="input-floorName" id="input-floorName">
 
     <input type="submit">
 </form>
@@ -56,3 +52,4 @@
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_Floors.js"></script>
+<script src="./js/delete_Floors.js"></script>
