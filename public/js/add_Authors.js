@@ -7,6 +7,12 @@ addAuthorForm.addEventListener("submit", function(e){
 
     let authorNameValue = inputAuthorName.value;
 
+    
+    if(authorNameValue === ''){ // Check if input is empty
+        alert("Please enter a valid author name.");
+        return;
+    }
+
     let data = {
         authorName: authorNameValue
     };
