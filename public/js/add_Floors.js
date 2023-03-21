@@ -7,6 +7,12 @@ addFloorForm.addEventListener("submit", function(e){
 
     let floorNameValue = inputFloorName.value;
 
+      // Input validation for floor name
+      if (!floorNameValue || floorNameValue.trim() === '') {
+        alert("Floor name cannot be empty.");
+        return;
+    }
+
     let data = {
         floorName: floorNameValue
     };
