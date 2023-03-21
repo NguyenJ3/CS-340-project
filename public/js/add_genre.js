@@ -14,6 +14,8 @@ addGenreForm.addEventListener("submit", function(e){
         floorName: floorNameValue
     };
 
+    if(genreNameValue != "" && floorNameValue != "")
+    {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/add-genre-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -31,6 +33,7 @@ addGenreForm.addEventListener("submit", function(e){
     };
 
     xhttp.send(JSON.stringify(data));
+    }
 });
 
 addRowToTable = (data) =>{

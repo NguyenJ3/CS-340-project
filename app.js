@@ -35,11 +35,23 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
 
     app.get('/books', function(req, res)
     {
-        let query1 = "SELECT Books.bookID as bookID, Books.bookName as bookName, Authors.authorName as authorName, Genres.genreName as genreName, Books.price as price, Books.totalCount as totalCount FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID JOIN Authors on Books.authorID = Authors.authorID ORDER BY Books.bookID ASC";
-        
+        //let query1 = "SELECT Books.bookID as bookID, Books.bookName as bookName, Authors.authorName as authorName, Genres.genreName as genreName, Books.price as price, Books.totalCount as totalCount FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID JOIN Authors on Books.authorID = Authors.authorID ORDER BY Books.bookID ASC";
+        let query1 = "SELECT Books.bookID as bookID, Books.bookName as bookName, Authors.authorName as authorName, Floors.floorName as floorName, Books.price as price, Books.totalCount as totalCount FROM Books JOIN Authors on Books.authorID = Authors.authorID JOIN Floors on Books.floorID = Floors.floorID ORDER BY Books.bookID ASC;";
+        let query2 = "SELECT * FROM Authors;";
+        let query3 = "SELECT * FROM Floors;";
+
+
         db.pool.query(query1, function(error,rows,fields){
             let book = rows;
-            res.render('Books',{data: book});
+            db.pool.query(query2, function(error, rows, fields){
+                let author = rows;
+                db.pool.query(query3, function(error,rows,fields){
+                    let floor = rows;
+                    res.render('Books',{data: book, authors: author, floors: floor});
+                })
+
+            })
+
         })
     });
 
@@ -70,10 +82,20 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
 
     app.get('/bookGenres', function(req,res)
     {
-        let query1 = "SELECT Book_Genres.bookID as bookID, Book_Genres.genreID as genreID, Books.bookName as bookName, Genres.genreName as genreName FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID ORDER BY Book_Genres.BookID ASC;";
+        let query1 = "SELECT Book_Genres.bookID as bookID, Book_Genres.genreID as genreID, Books.bookName as bookName, Genres.genreName as genreName FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID;";
+        
+        let query2 = "SELECT * FROM Books;";
+        let query3 = "SELECT * FROM Genres;";
+        
         db.pool.query(query1, function(error,rows,fields){
-            let genre = rows;
-            res.render('Book_Genres',{data: genre});
+            let table = rows;
+            db.pool.query(query2, (error,rows, fields) =>{
+                let books = rows;
+                db.pool.query(query3, (error,rows, fields) =>{
+                    let genres = rows;
+                    res.render('Book_Genres',{data: table, books: books, genre: genres});
+                })
+            })
         })
     });
 
@@ -105,6 +127,65 @@ app.post('/add-genre-ajax', function(req, res)
         }
     });
 });
+
+app.post('/add-book-ajax', function(req, res)
+{
+    let data = req.body;
+
+    let query1 = `INSERT INTO Books(bookName, authorID, floorID, totalCount, price) VALUES ('${data.bookName}', ${data.authorID}, ${data.floorID}, ${data.totalCount}, ${data.price});`;
+    db.pool.query(query1, function(error, rows, fields){
+        if(error){
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            let query2 = `SELECT Books.bookID as bookID, Books.bookName as bookName, Authors.authorName as authorName, Floors.floorName as floorName, Books.price as price, Books.totalCount as totalCount FROM Books JOIN Authors on Books.authorID = Authors.authorID JOIN Floors on Books.floorID = Floors.floorID ORDER BY Books.bookID ASC;`;
+            db.pool.query(query2,function(error,rows,fields){
+                if(error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    });
+});
+
+
+
+app.post('/add-bookGenre-ajax', function(req, res)
+{
+    let data = req.body;
+
+    let query1 = `INSERT INTO Book_Genres(bookID,genreID) VALUES ((SELECT bookID FROM Books WHERE bookName = '${data.bookName}' LIMIT 1),(SELECT genreID FROM Genres WHERE genreName = '${data.genreName}' LIMIT 1));`;
+    db.pool.query(query1, function(error, rows, fields){
+        if(error){
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            let query2 = `SELECT Book_Genres.bookID as bookID, Book_Genres.genreID as genreID, Books.bookName as bookName, Genres.genreName as genreName FROM Book_Genres JOIN Books on Book_Genres.bookID = Books.bookID JOIN Genres on Book_Genres.genreID = Genres.genreID ORDER BY Book_Genres.BookID ASC;`;
+            db.pool.query(query2,function(error,rows,fields){
+                if(error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    });
+});
+
+
+
 
 app.post('/add-authors-ajax', function(req, res) {
     let data = req.body;
@@ -179,6 +260,34 @@ app.delete('/delete-genre-ajax', function(req,res,next){
     });
 
 });
+
+app.delete('/delete-book-ajax', function(req,res,next){
+    let data = req.body;
+    let bookID = parseInt(data.id);
+    let deleteBook_Genres = `DELETE FROM Book_Genres WHERE bookID = ?`;
+    let deleteBook = `DELETE FROM Books WHERE bookID = ?`;
+
+    db.pool.query(deleteBook_Genres, [bookID], function(error,rows,fields){
+        if(error){
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else
+        {
+            db.pool.query(deleteBook, [bookID], function(error,rows,fields){
+                if(error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else{
+                    res.sendStatus(204)
+                }
+            });
+        }
+    });
+
+});
+
 app.delete('/delete-authors-ajax', function(req, res) {
     let data = req.body;
   
@@ -210,6 +319,24 @@ app.delete('/delete-authors-ajax', function(req, res) {
       }
     });
 });
+
+app.delete('/delete-bookGenre-ajax', function(req, res) {
+    let data = req.body;
+  
+    let query1 = `DELETE FROM Book_Genres WHERE bookID = ${data.bookID} AND genreID = ${data.genreID}`;
+  
+    db.pool.query(query1, function(error, rows, fields){
+      if(error) {
+        console.log(error);
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+  });
+
+
+
 //Put is for UPDATE
 app.put('/put-genre-ajax', function(req,res,next){
     let data = req.body;
@@ -241,6 +368,38 @@ app.put('/put-genre-ajax', function(req,res,next){
 
 })
 
+app.put('/put-book-ajax', function(req,res,next){
+    let data = req.body;
+    let floor = parseInt(data.floor);
+    let book = parseInt(data.book); 
+    let author = parseInt(data.author);
+    let bookCount = parseInt(data.bookCount);
+    let price = parseFloat(data.price);
+
+    let queryUpdateBook = `UPDATE Books SET floorID = ?, authorID = ?, price = ?, totalCount = ? WHERE bookID = ?`;
+    let selectFloor = `SELECT * FROM Floors WHERE floorID = ?`;
+
+    db.pool.query(queryUpdateBook,[floor, author, price, bookCount, book], function(error,rows,fields){
+        if(error){
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else
+        {
+            // Run the second query
+            db.pool.query(selectFloor, [floor], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+
+})
 
 /*
     LISTENER

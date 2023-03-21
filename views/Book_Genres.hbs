@@ -6,13 +6,25 @@
     <body>
 	<h1>Book Genre Relationship Information</h1>
 
-	<form id="add-form">
-		<label for="bookName">Book Name:</label>
-		<input type="text" id="bookName" name="bookName">
-		<label for="gerneName">Genre Name:</label>
-		<input type="text" id="gerneName" name="gerneName">
-		<input type="submit" value="Add">
-	</form>
+{{!-- Form to add a record to the table  --}}
+<form id="add-bookGenre-form">
+    <select name="input-bookName" id="input-bookName">
+        <option value="">Select a Book</option>
+        {{#each books}}
+        <option value="{{this.bookName}}">{{this.bookName}}</option>
+        {{/each}}
+    </select>
+
+    <select name="input-genreName" id="input-genreName">
+        <option value="">Select a Genre</option>
+        {{#each genre}}
+        <option value="{{this.genreName}}">{{this.genreName}}</option>
+        {{/each}}
+    </select>
+
+
+    <input type="submit">
+</form>
 
 	<!-- Table -->
 
@@ -36,10 +48,10 @@
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr data-value={{this.bookID}}>
+        <tr book-value={{this.bookID}} genre-value={{this.genreID}}>
             <td>{{this.bookName}}</td>
             <td>{{this.genreName}}</td>
-            <td><button onclick="deletebookGenre({{this.bookID}},{{this.genreID}})">Delete</button></td>
+            <td><button onclick="delete_bookGenre({{this.bookID}},{{this.genreID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -57,3 +69,5 @@ function deleteRow(button) {
 }
       </script>
 
+<script src="./js/delete_bookGenre.js"></script>
+<script src="./js/add_bookGenre.js"></script>

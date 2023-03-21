@@ -3,19 +3,33 @@
 <h1>Books Information</h1>
 
 	<!-- Add form -->
-	<form id="add-form">
-		<label for="bookName">Book Name:</label>
-		<input type="text" id="bookName" name="bookName">
-		<label for="authorName">Author Name:</label>
-		<input type="text" id="authorName" name="authorName">
-		<label for="genreName">Genre(Optional):</label>
-		<input type="text" id="genreName" name="genreName">
-		<label for="price">Price:</label>
-		<input type="text" id="price" name="price">
-        <label for="totalCount">Total Count:</label>
-		<input type="text" id="totalCount" name="totalCount">
-		<input type="submit" value="Add">
-	</form>
+    <form id="add-book-form">
+    <label for="input-bookName">Book Name: </label>
+    <input type="text" name="input-bookName" id="input-bookName">
+
+    <select name="input-authorName" id="input-authorName">
+        <option value="">Select an Author</option>
+        {{#each authors}}
+        <option value="{{this.authorID}}">{{this.authorName}}</option>
+        {{/each}}
+    </select>
+
+    <select name="input-floorName" id="input-floorName">
+        <option value="">Select a Floor</option>
+        {{#each floors}}
+        <option value="{{this.floorID}}">{{this.floorName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-price">Price: </label>
+    <input type="number" name="input-price" id="input-price" min=".01" max="100" step=".01">
+
+    <label for="input-bookCount">Book Count: </label>
+    <input type="number" name="input-bookCount" id="input-bookCount" min="0" step="1">
+
+
+    <input type="submit">
+</form>
 
 	<!-- Table -->
 <table id="book-table">
@@ -44,7 +58,7 @@
             <td>{{this.bookID}}</td>
             <td>{{this.bookName}}</td>
             <td>{{this.authorName}}</td>
-			<td>{{this.genreName}}</td>
+			<td>{{this.floorName}}</td>
 		    <td>{{this.price}}</td>
 			<td>{{this.totalCount}}</td>
             <td><button onclick="deleteBook({{this.bookID}})">Delete</button></td>
@@ -53,15 +67,49 @@
     </tbody>
 </table>
 
+<h2>Updating Book Info</h2>
+<p>To update a specific book, select their name in the drop-down menu then select/enter in the new Information you want. If you arent updating a value it doesnt need to be entered.</p>
+<form id="update-book-form-ajax">
 
-	<script>
-// Function to delete a row from the table
-function deleteRow(button) {
-  // Traverse the DOM to get the table row element
-  var row = button.parentNode.parentNode;
+    <label for="input-book">Genre: </label>
+    <select name="input-book" id="mySelect">
+        <option value="test">Select a Book</option>
+        {{#each data}}
+        <option value="{{this.bookID}}">{{this.bookName}}</option>
+        {{/each}}
+    </select>
 
-  // Remove the row from the table
-  row.parentNode.removeChild(row);
-}
-      </script>
+    <label for="input-author">Author: </label>
+    <select name="input-author" id="input-author-update">
+        <option>Select a Author</option>
+        {{#each authors}}
+        <option value="{{this.authorID}}">{{this.authorName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-floor">Floor: </label>
+    <select name="input-floor" id="input-floor-update">
+        <option>Select a Floor</option>
+        {{#each floors}}
+        <option value="{{this.floorID}}">{{this.floorName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-price">Price: </label>
+    <input type="number" name="input-price" id="input-price-update" min=".01" max="100" step=".01">
+
+    <label for="input-bookCount">Book Count: </label>
+    <input type="number" name="input-bookCount" id="input-bookCount-update" min="0" step="1">
+
+    <input type="submit">
+
+</form>
+
+
 </body>
+
+<script src="./js/delete_books.js"></script>
+
+<script src="./js/add_book.js"></script>
+
+<script src="./js/update_book.js"></script>
