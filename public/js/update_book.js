@@ -22,7 +22,7 @@ updateBookForm.addEventListener("submit", function (e) {
     let bookCountValue = inputBookCount.value;
     
 
-    if (isNaN(floorNameValue)) 
+    if (inputBookName.value == "") 
     {
         return;
     }
@@ -47,7 +47,13 @@ updateBookForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            //updateRow(xhttp.response, bookNameValue);
+            updateRow(xhttp.response, bookNameValue);
+
+            inputAuthorName.value = '';
+            inputBookCount.value = '';
+            inputBookName.value = '';
+            inputFloorName.value = '';
+            inputPrice.value = '';
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -61,24 +67,32 @@ updateBookForm.addEventListener("submit", function (e) {
 })
 
 
-function updateRow(data, genreID){
+function updateRow(data, bookID){
     let parsedData = JSON.parse(data);
     
-    let table = document.getElementById("genre-table");
+    let table = document.getElementById("book-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == genreID) {
+       if (table.rows[i].getAttribute("data-value") == bookID) {
 
             // Get the location of the row where we found the matching person ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td of homeworld value
+            
             let td = updateRowIndex.getElementsByTagName("td")[2];
+            td.innerHTML = parsedData[0].authorName;
 
-            // Reassign homeworld to our value we updated to
+            td = updateRowIndex.getElementsByTagName("td")[3];
             td.innerHTML = parsedData[0].floorName; 
+
+            td = updateRowIndex.getElementsByTagName("td")[4];
+            td.innerHTML = parsedData[0].price;
+
+            td = updateRowIndex.getElementsByTagName("td")[5];
+            td.innerHTML = parsedData[0].totalCount;
        }
     }
 }

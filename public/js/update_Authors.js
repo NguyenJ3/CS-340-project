@@ -9,11 +9,16 @@ updateAuthorForm.addEventListener("submit", function (e) {
 
     // Get form fields we need to get data from
     let inputAuthorName = document.getElementById("mySelect");
-    let inputNewAuthorName = document.getElementById("input-author-update");
+    let inputNewAuthorName = document.getElementById("input-name-update");
 
     // Get the values from the form fields
     let authorNameValue = inputAuthorName.value;
     let newAuthorNameValue = inputNewAuthorName.value;
+
+    if(inputAuthorName.value == "" || inputNewAuthorName.value == "")
+    {
+        return;
+    }
 
     // Put our data we want to send in a javascript object
     let data = {
@@ -32,6 +37,9 @@ updateAuthorForm.addEventListener("submit", function (e) {
 
             // Add the new data to the table
             updateRow(xhttp.response, authorNameValue);
+
+            inputAuthorName.value = '';
+            inputNewAuthorName.value = '';
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {

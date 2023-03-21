@@ -1,38 +1,34 @@
 // Get the objects we need to modify
-let updateGenreForm = document.getElementById('update-genre-form-ajax');
+let updateFloorForm = document.getElementById('update-floor-form-ajax');
 
 // Modify the objects we need
-updateGenreForm.addEventListener("submit", function (e) {
+updateFloorForm.addEventListener("submit", function (e) {
    
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputGenreName = document.getElementById("mySelect");
-    let inputFloorName = document.getElementById("input-floor-update");
+    let inputFloorName = document.getElementById("mySelect");
+    let inputNewFloorName = document.getElementById("input-name-update");
 
     // Get the values from the form fields
-    let genreNameValue = inputGenreName.value;
     let floorNameValue = inputFloorName.value;
-    
-    // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
+    let newFloorNameValue = inputNewFloorName.value;
 
-    if (inputGenreName.value == "" || inputFloorName.value == "") 
+    if(inputFloorName.value == "" || inputNewFloorName.value == "")
     {
         return;
     }
 
-
     // Put our data we want to send in a javascript object
     let data = {
-        genre: genreNameValue,
-        floor: floorNameValue,
+        floorID: floorNameValue,
+        floorName: newFloorNameValue,
     }
-    
+
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/put-genre-ajax", true);
+    xhttp.open("PUT", "/put-floor-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -40,9 +36,10 @@ updateGenreForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, genreNameValue);
+            updateRow(xhttp.response, floorNameValue);
+
             inputFloorName.value = '';
-            inputGenreName.value = '';
+            inputNewFloorName.value = '';
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -56,23 +53,23 @@ updateGenreForm.addEventListener("submit", function (e) {
 })
 
 
-function updateRow(data, genreID){
+function updateRow(data, floorID){
     let parsedData = JSON.parse(data);
     
-    let table = document.getElementById("genre-table");
+    let table = document.getElementById("floor-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == genreID) {
+       if (table.rows[i].getAttribute("data-value") == floorID) {
 
-            // Get the location of the row where we found the matching person ID
+            // Get the location of the row where we found the matching author ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[2];
+            // Get td of author name value
+            let td = updateRowIndex.getElementsByTagName("td")[1];
 
-            // Reassign homeworld to our value we updated to
+            // Reassign author name to our new value
             td.innerHTML = parsedData[0].floorName; 
        }
     }

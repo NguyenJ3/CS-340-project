@@ -376,10 +376,82 @@ app.put('/put-book-ajax', function(req,res,next){
     let bookCount = parseInt(data.bookCount);
     let price = parseFloat(data.price);
 
+
+    let queryExtraData = `SELECT Books.authorID, Books.floorID, Books.price, Books.totalCount FROM Books WHERE BookID = ?`;
     let queryUpdateBook = `UPDATE Books SET floorID = ?, authorID = ?, price = ?, totalCount = ? WHERE bookID = ?`;
+    let selectInfo = `SELECT Authors.authorName, Floors.floorName, Books.price, Books.totalCount FROM Books JOIN Authors on Books.authorID = Authors.authorID JOIN Floors on Books.floorID = Floors.floorID WHERE BookID = ?`;
+
+    db.pool.query(queryExtraData,[book], function(error,rows,fields){
+        if(isNaN(floor))
+        {floor = rows[0].floorID}
+
+        if(isNaN(author))
+        {author = rows[0].authorID}
+
+        if(isNaN(bookCount))
+        {bookCount = rows[0].totalCount}
+
+        if(isNaN(price))
+        {price = rows[0].price}
+    db.pool.query(queryUpdateBook,[floor, author, price, bookCount, book], function(error,rows,fields){
+        if(error){
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else
+        {
+            // Run the second query
+            db.pool.query(selectInfo, [book], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+    })
+})
+
+app.put('/put-author-ajax', function(req,res,next){
+    let data = req.body;
+    let author = parseInt(data.authorID);
+
+    let queryUpdateFloor = `UPDATE Authors SET authorName = ? WHERE authorID = ?`;
+    let selectFloor = `SELECT * FROM Authors WHERE authorID = ?`;
+
+    db.pool.query(queryUpdateFloor,[data.authorName, author], function(error,rows,fields){
+        if(error){
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else
+        {
+            // Run the second query
+            db.pool.query(selectFloor, [author], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+
+})
+
+app.put('/put-floor-ajax', function(req,res,next){
+    let data = req.body;
+    let floor = parseInt(data.floorID);
+
+    let queryUpdateFloor = `UPDATE Floors SET floorName = ? WHERE floorID = ?`;
     let selectFloor = `SELECT * FROM Floors WHERE floorID = ?`;
 
-    db.pool.query(queryUpdateBook,[floor, author, price, bookCount, book], function(error,rows,fields){
+    db.pool.query(queryUpdateFloor,[data.floorName, floor], function(error,rows,fields){
         if(error){
             console.log(error);
             res.sendStatus(400);

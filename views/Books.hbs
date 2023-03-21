@@ -73,7 +73,7 @@
 
     <label for="input-book">Genre: </label>
     <select name="input-book" id="mySelect">
-        <option value="test">Select a Book</option>
+        <option value="">Select a Book</option>
         {{#each data}}
         <option value="{{this.bookID}}">{{this.bookName}}</option>
         {{/each}}
@@ -81,7 +81,7 @@
 
     <label for="input-author">Author: </label>
     <select name="input-author" id="input-author-update">
-        <option>Select a Author</option>
+        <option value="">Select a Author</option>
         {{#each authors}}
         <option value="{{this.authorID}}">{{this.authorName}}</option>
         {{/each}}
@@ -89,7 +89,7 @@
 
     <label for="input-floor">Floor: </label>
     <select name="input-floor" id="input-floor-update">
-        <option>Select a Floor</option>
+        <option value="">Select a Floor</option>
         {{#each floors}}
         <option value="{{this.floorID}}">{{this.floorName}}</option>
         {{/each}}

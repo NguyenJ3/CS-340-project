@@ -50,6 +50,27 @@
 </tbody>
 </table>
 
+<h2>Updating a Floor's Name</h2>
+<p>To update a specific floor name, select their name from the drop-down menu on the left and enter their new name on the right</p>
+<form id="update-floor-form-ajax">
+
+    <label for="input-floor">Floor: </label>
+    <select name="input-author" id="mySelect">
+        <option value="">Select a Floor</option>
+        {{#each data}}
+        <option value="{{this.floorID}}">{{this.floorName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name-update">
+
+    <input type="submit">
+
+</form>
+
+
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_Floors.js"></script>
 <script src="./js/delete_Floors.js"></script>
+<script src="./js/update_floor.js"></script>

@@ -54,7 +54,7 @@
 
     <label for="input-genre">Genre: </label>
     <select name="input-genre" id="mySelect">
-        <option value="test">Select a Genre</option>
+        <option value="">Select a Genre</option>
         {{#each data}}
         <option value="{{this.genreID}}">{{this.genreName}}</option>
         {{/each}}
@@ -62,7 +62,7 @@
 
     <label for="input-floor">Floor: </label>
     <select name="input-floor" id="input-floor-update">
-        <option>Select a Floor</option>
+        <option value="">Select a Floor</option>
         {{#each floors}}
         <option value="{{this.floorID}}">{{this.floorName}}</option>
         {{/each}}
